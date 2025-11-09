@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import Homepage from "./Pages/Home_Page/Homepage"; // <-- Reintroduce Homepage import
-import LoadingPage from "./Pages/Loading_Page/Loadingpage";
-import Aboutpage from "./Pages/About_Page/AboutPage"; // Kept for reference/routing, but primarily used in Homepage
-
+import Home from "./Pages/Home_Page/Home.jsx";
+import LoadingPage from "./Pages/Loading_Page/Loadingpage.jsx";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,7 +16,7 @@ function App() {
         <LoadingPage onFinish={handleLoadingFinish} />
       ) : (
         // Renders the Homepage component, which now embeds the AboutPage content
-        <Homepage />
+        <Home />
       )}
     </>
   );

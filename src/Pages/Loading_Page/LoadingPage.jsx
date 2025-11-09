@@ -9,7 +9,7 @@ const SLIDE_UP_ANIM_DURATION_MS = 800;
 const PROGRESS_FILL_DURATION = 1200;
 const CURTAIN_WIPE_DURATION = NUM_BARS * ANIM_STAGGER_MS + BAR_ANIM_DURATION_MS;
 
-const textToAnimate = "< codeshack />";
+const textToAnimate = "< CODESHACK />";
 const characters = textToAnimate.split("");
 
 export default function LoadingPage({ onFinish }) {
@@ -34,7 +34,7 @@ export default function LoadingPage({ onFinish }) {
 
     const unmountTimer = setTimeout(() => {
       setDone(true);
-      if (onFinish) onFinish(); // ✅ notify App.jsx
+      if (onFinish) onFinish();
     }, PROGRESS_FILL_DURATION + CURTAIN_WIPE_DURATION + SLIDE_UP_ANIM_DURATION_MS);
 
     return () => {

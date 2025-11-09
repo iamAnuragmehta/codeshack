@@ -5,7 +5,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #000;
+  background: #000000; /* Black */
   z-index: 9999;
 
   display: grid;
@@ -20,7 +20,7 @@
   transform: translateY(-100%);
 }
 
-/* Text Gradient */
+/* Text Gradient —— Codeshack accent colors */
 .loading-text {
   display: flex;
   font-weight: bold;
@@ -29,14 +29,11 @@
 
   background: linear-gradient(
     to right,
-    #f79533,
-    #f37055,
-    #ef4e7b,
-    #a166ab,
-    #5073b8,
-    #1098ad,
-    #07b39b,
-    #6fba82
+    #ff4fa3,
+    /* Pink */ #f2a6ff,
+    /* Light pink */ #3a66ff,
+    /* Blue */ #1a2b8f,
+    /* Dark blue */ #f7931a /* Orange */
   );
   -webkit-background-clip: text;
   color: transparent;
@@ -58,9 +55,11 @@
 .loading-bar {
   flex-grow: 1;
   height: 100%;
-  background: #c9e265;
   transform-origin: bottom;
   transform: scaleY(0);
+
+  /* Codeshack bar color */
+  background: #3a66ff; /* Blue */
 }
 
 /* Progress Bar */
@@ -70,22 +69,25 @@
   left: 0;
   width: 100%;
   height: 8px;
-  background: #444;
+  background: #1a1a1a; /* Dark grey, subtle */
   overflow: hidden;
 }
 
+/* Fill color */
 .loading-progress-fill {
   height: 100%;
-  background: #c9e265;
+  background: linear-gradient(90deg, #f7931a, /* Orange */ #ff4fa3 /* Pink */);
 }
 
 /* ANIMATIONS */
 @keyframes grow-bar {
   from {
     transform: scaleY(0);
+    background: #1a2b8f; /* Dark blue base */
   }
   to {
     transform: scaleY(1);
+    background: #ff4fa3; /* Pink peak */
   }
 }
 
