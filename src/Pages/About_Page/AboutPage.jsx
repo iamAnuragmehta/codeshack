@@ -1,4 +1,5 @@
 import Introduction from "./PageComps/Introduction";
+import TeamReveal from "./PageComps/TeamReveal";
 import TeamShowcaseHorizontal from "./PageComps/TeamShowcaseHorizontal";
 
 export default function Aboutpage({ dark }) {
@@ -16,6 +17,10 @@ export default function Aboutpage({ dark }) {
 
       <section id="profile-section-start">
         <TeamShowcaseHorizontal dark={dark} />
+      </section>
+
+      <section id="profile-section-start">
+        <TeamReveal dark={dark} />
       </section>
     </main>
   );
