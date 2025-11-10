@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Home from "./Pages/Home_Page/Home.jsx";
-import LoadingPage from "./Pages/Loading_Page/Loadingpage.jsx";
+import LoadingPage from "./Pages/Loading_Page/LoadingPage.jsx";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
