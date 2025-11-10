@@ -1,19 +1,22 @@
-// src/Aboutpage.jsx
 import Introduction from "./PageComps/Introduction";
-import Profiles from "./PageComps/Profiles";
-import History from "./PageComps/History";
+import TeamShowcaseHorizontal from "./PageComps/TeamShowcaseHorizontal";
 
-export default function Aboutpage() {
+export default function Aboutpage({ dark }) {
   return (
-    <main className="will-change-transform">
-      {/* Section 1: The animated hero/intro with parallax scroll effects */}
-      <Introduction />
+    <main
+      className="w-full min-h-screen overflow-x-hidden"
+      style={{
+        background: dark ? "#000000" : "#ffffff",
+        color: dark ? "#ffffff" : "#000000",
+      }}
+    >
+      <section id="about-section-start">
+        <Introduction dark={dark} />
+      </section>
 
-      {/* Section 2: The team filter and horizontal scroll showcase */}
-      <Profiles />
-
-      {/* Section 3: The horizontal drag-to-scroll timeline/history section */}
-      <History />
+      <section id="profile-section-start">
+        <TeamShowcaseHorizontal dark={dark} />
+      </section>
     </main>
   );
 }

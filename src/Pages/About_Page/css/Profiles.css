@@ -1,9 +1,0 @@
-.profiles-wrapper {
-  min-height: auto;
-  background: #000000;
-  color: #ffffff;
-  will-change: transform;
-  padding-top: 60px;
-  position: relative;
-  z-index: 1;
-}

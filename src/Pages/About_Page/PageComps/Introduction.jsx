@@ -1,106 +1,189 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Code2, Sparkles } from "lucide-react";
-import "../css/Introduction.css";
+import "./Introduction.css";
 
-export default function Introduction() {
-  const containerRef = useRef(null);
+export default function Introduction({ dark }) {
+  const ref = useRef(null);
+
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: ref,
     offset: ["start start", "end start"],
   });
 
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0.95]);
-  const y = useTransform(scrollYProgress, [0, 0.3], [0, 20]);
-  const blur = useTransform(scrollYProgress, [0, 0.3], [0, 3]);
+  const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0.94]);
+  const y = useTransform(scrollYProgress, [0, 0.3], [0, 25]);
+
+  const domeOpacity = useTransform(scrollYProgress, [0, 0.3], [0.35, 0]);
+  const domeScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.22]);
+
+  // ✅ Scroll-snap to profiles
+  useEffect(() => {
+    let timeout;
+    const handler = () => {
+      const intro = ref.current;
+      const next = document.getElementById("profiles-section");
+      if (!intro || !next) return;
+
+      const rect = intro.getBoundingClientRect();
+      if (rect.bottom < window.innerHeight * 0.45) {
+        timeout = setTimeout(() => {
+          next.scrollIntoView({ behavior: "smooth" });
+        }, 80);
+      }
+    };
+
+    window.addEventListener("scroll", handler);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("scroll", handler);
+    };
+  }, []);
 
   return (
-    <div className="intro-wrapper">
+    <section
+      id="intro-section"
+      ref={ref}
+      className="relative w-full h-screen overflow-hidden flex items-center justify-center"
+      style={{ background: dark ? "#000" : "#fff" }}
+    >
+      {/* ✅ Parallax Blobs */}
       <motion.div
-        ref={containerRef}
-        className="intro-container"
-        style={{ scale, y, opacity }}
-      >
+        className="absolute w-[600px] h-[600px] rounded-full blur-[150px]"
+        style={{
+          background: dark ? "#3A66FF44" : "#3A66FF33",
+          top: "-18%",
+          left: "-18%",
+        }}
+        animate={{ x: [0, 25, -15, 0], y: [0, -20, 15, 0] }}
+        transition={{ duration: 20, repeat: Infinity }}
+      />
+
+      <motion.div
+        className="absolute w-[550px] h-[550px] rounded-full blur-[150px]"
+        style={{
+          background: dark ? "#FF4FA355" : "#F2A6FF55",
+          bottom: "-18%",
+          right: "-18%",
+        }}
+        animate={{ x: [0, -30, 18, 0], y: [0, 20, -18, 0] }}
+        transition={{ duration: 24, repeat: Infinity }}
+      />
+
+      {/* ✅ Radial Dome */}
+      <motion.div
+        className="absolute w-[150%] h-[120%] rounded-full pointer-events-none"
+        style={{
+          top: "12%",
+          left: "50%",
+          translateX: "-50%",
+          background: dark
+            ? "radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%)"
+            : "radial-gradient(circle, rgba(0,0,0,0.08), transparent 70%)",
+          opacity: domeOpacity,
+          scale: domeScale,
+        }}
+      />
+
+      {/* ✅ Floating Particles */}
+      {Array.from({ length: 26 }).map((_, i) => (
         <motion.div
-          className="intro-background"
-          style={{ filter: `blur(${blur}px)` }}
+          key={i}
+          className="absolute w-[3px] h-[3px] rounded-full"
+          style={{
+            background: dark ? "#ffffff40" : "#00000040",
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [-10, 10, -10],
+            opacity: [0.3, 1, 0.3],
+          }}
+          transition={{
+            duration: 4 + Math.random() * 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+
+      {/* ✅ CONTENT */}
+      <motion.div
+        className="relative z-10 text-center px-6"
+        style={{ opacity, scale, y }}
+      >
+        {/* Eyebrow */}
+        <div
+          className="mb-3 text-sm tracking-wide font-medium"
+          style={{ color: dark ? "#e8e8e8" : "#333" }}
         >
-          <div className="grid-pattern"></div>
-          <div className="gradient-orb gradient-orb-1"></div>
-          <div className="gradient-orb gradient-orb-2"></div>
-          <div className="gradient-orb gradient-orb-3"></div>
-          <div className="gradient-orb gradient-orb-4"></div>
-          <div className="gradient-orb gradient-orb-5"></div>
-          <div className="gradient-orb gradient-orb-6"></div>
-        </motion.div>
+          <span>{"<CODESHACK />"}</span>
+        </div>
 
-        <motion.div className="intro-content" style={{ y }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="intro-badge"
-          >
-            <Code2 className="badge-icon" size={16} />
-            <span>CODESHACK</span>
-          </motion.div>
+        {/* ✅ Title With Shimmer */}
+        <h1
+          className="font-semibold leading-tight relative overflow-hidden"
+          style={{
+            fontSize: "clamp(2.8rem, 6vw, 4.7rem)",
+            color: dark ? "#fff" : "#000",
+          }}
+        >
+          The Powerhouse of
+          <br />
+          <span className="relative inline-block shimmer-text">
+            Developers, Hackers & Linux Minds
+          </span>
+        </h1>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="intro-title"
-          >
-            Where Ideas
-            <br />
-            <span className="title-gradient">Transform Into Reality</span>
-          </motion.h1>
+        {/* ✅ Short Strong Description */}
+        <p
+          className="text-lg max-w-2xl mx-auto mt-5"
+          style={{ color: dark ? "#d1d1d1" : "#555" }}
+        >
+          Codeshack blends two forces—
+          <b> Techub</b> for engineering & AI,
+          <b> GLUG</b> for Linux & open-source.
+          <br />
+          Together, we turn curiosity into mastery.
+        </p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="intro-description"
-          >
-            A collective of 70 passionate innovators, designers, and creators
-            <br />
-            united by curiosity and driven by excellence
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-            className="intro-stats"
-          >
-            <div className="stat-item">
-              <div className="stat-number">70+</div>
-              <div className="stat-label">Members</div>
+        {/* ✅ Stats */}
+        <div className="mt-10 flex justify-center gap-10">
+          {[
+            ["70+", "Members"],
+            ["7", "Batches"],
+            ["2", "Core Clubs"],
+          ].map(([num, label]) => (
+            <div key={label}>
+              <div
+                className="font-semibold text-3xl"
+                style={{ color: dark ? "#fff" : "#000" }}
+              >
+                {num}
+              </div>
+              <div
+                className="text-sm"
+                style={{ color: dark ? "#ccc" : "#555" }}
+              >
+                {label}
+              </div>
             </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <div className="stat-number">7</div>
-              <div className="stat-label">Batches</div>
-            </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <div className="stat-number">4</div>
-              <div className="stat-label">Departments</div>
-            </div>
-          </motion.div>
+          ))}
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="scroll-indicator"
-          >
-            <div className="scroll-line"></div>
-            <span className="scroll-text">Scroll to meet our members</span>
-          </motion.div>
+        {/* ✅ Scroll Arrow (Minimal Bounce) */}
+        <motion.div
+          className="mt-12 flex flex-col items-center"
+          style={{ color: dark ? "#999" : "#444" }}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.4, repeat: Infinity }}
+        >
+          <div className="text-xl">↓</div>
+          <div className="text-xs opacity-60 mt-1">Scroll to continue</div>
         </motion.div>
       </motion.div>
-    </div>
+
+      <div id="intro-section-end" className="absolute bottom-[20%]" />
+    </section>
   );
 }
