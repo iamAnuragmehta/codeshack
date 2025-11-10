@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./loadingPage.css";
+import "./LoadingPage.css";
 
 const NUM_BARS = 20;
 const ANIM_STAGGER_MS = 40;
