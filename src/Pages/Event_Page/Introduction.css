@@ -1,0 +1,17 @@
+/* Title shimmer */
+.shimmer-text {
+  background: linear-gradient(90deg, #ff4fa3, #3a66ff, #f7931a, #ff4fa3);
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shimmerMove 4s linear infinite;
+  background-size: 300%;
+}
+
+@keyframes shimmerMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}

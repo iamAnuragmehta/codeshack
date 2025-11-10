@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar.jsx";
 import { Hero } from "../components/ui/hero-1.jsx";
 import Aboutpage from "../About_Page/AboutPage.jsx";
+import EventsPage from "../Event_Page/EventPage.jsx";
 import { ThemeToggle } from "../components/ui/theme-toggle.jsx";
 import DemoOne from "./Background.jsx";
 
@@ -40,6 +41,11 @@ const Home = () => {
       {/* ✅ ABOUT PAGE (the section below hero) */}
       <section id="about-section" className="relative z-10">
         <Aboutpage dark={dark} />
+      </section>
+
+      {/* ✅ Events Page */}
+      <section id="event-section" className="relative z-10">
+        <EventsPage dark={dark} />
       </section>
     </div>
   );
