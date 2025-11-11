@@ -446,91 +446,149 @@ export default function TeamReveal({ dark = true }) {
 
         /* Header */
         .cs-header {
-          padding: 5rem 6vw 1.5rem;
+          padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 6vw, 6vw) clamp(1rem, 3vw, 1.5rem);
           max-width: var(--content-max-width);
           margin: 0 auto;
         }
-        .cs-page-title { margin: 0; font-weight: 700; letter-spacing: -0.02em; font-size: clamp(28px, 5vw, 48px); }
-        .cs-page-sub { margin: .6rem 0 0; opacity: .8; max-width: 900px; font-size: clamp(14px, 2vw, 18px); }
+        .cs-page-title { margin: 0; font-weight: 700; letter-spacing: -0.02em; font-size: clamp(24px, 5vw, 48px); }
+        .cs-page-sub { margin: .6rem 0 0; opacity: .8; max-width: 900px; font-size: clamp(12px, 2vw, 18px); }
 
         /* Content wrapper */
         .cs-content-wrap {
           max-width: var(--content-max-width);
           margin: 0 auto;
-          padding: 0 6vw 5rem;
+          padding: 0 clamp(1rem, 6vw, 6vw) clamp(2rem, 5vw, 5rem);
         }
 
-        .cs-section { padding: 0 0 3.2rem 0; }
-        .cs-section-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
-        .cs-section-title { margin: 0; font-size: clamp(22px, 3.2vw, 32px); font-weight: 700; letter-spacing: -0.01em; }
+        .cs-section { padding: 0 0 clamp(2rem, 5vw, 3.2rem) 0; }
+        .cs-section-head { display: flex; align-items: center; gap: 1rem; margin-bottom: clamp(0.8rem, 2vw, 1.2rem); flex-wrap: wrap; }
+        .cs-section-title { margin: 0; font-size: clamp(18px, 3.2vw, 32px); font-weight: 700; letter-spacing: -0.01em; }
         .cs-section-accent { height: 6px; width: 64px; border-radius: 999px; opacity: .5; }
 
         /* Fixed 3-per-row centered grid */
         .cs-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
+          gap: clamp(16px, 3vw, 24px);
           max-width: 1100px;
           margin: 0 auto; /* centers the 3-column grid */
         }
         @media (max-width: 1100px) {
           .cs-grid { grid-template-columns: repeat(2, 1fr); max-width: 740px; }
         }
-        @media (max-width: 680px) {
-          .cs-grid { grid-template-columns: 1fr; max-width: 360px; }
+        @media (max-width: 768px) {
+          .cs-grid { grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 3vw, 18px); max-width: 100%; }
+        }
+        @media (max-width: 640px) {
+          .cs-grid { 
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 1rem 1rem 1rem;
+            margin: 0;
+            max-width: 100%;
+            scroll-snap-type: x mandatory;
+          }
+          .cs-grid::-webkit-scrollbar {
+            height: 6px;
+          }
+          .cs-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+          }
+          .cs-grid::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+          }
+          .cs-grid::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+          }
+          .light .cs-grid::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+          }
+          .light .cs-grid::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.3);
+          }
+          .light .cs-grid::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.5);
+          }
         }
 
         /* Card */
         .cs-detailed-card {
-          position: relative; border-radius: 18px; isolation: isolate; overflow: hidden;
+          position: relative; border-radius: clamp(12px, 3vw, 18px); isolation: isolate; overflow: hidden;
           box-shadow: 0 4px 15px rgba(0,0,0,0.12); transition: box-shadow 200ms ease, transform 200ms ease;
         }
         .cs-detailed-card:hover { box-shadow: 0 10px 28px rgba(0,0,0,0.28); transform: translateY(-2px); }
+        
+        @media (max-width: 640px) {
+          .cs-detailed-card {
+            min-width: 280px;
+            flex-shrink: 0;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+          }
+        }
 
         .cs-card-border {
-          position: absolute; inset: 0; border-radius: 18px; padding: 1px;
+          position: absolute; inset: 0; border-radius: clamp(12px, 3vw, 18px); padding: 1px;
           background: linear-gradient(135deg, ${CS.BLUE}, ${CS.PINK}, ${CS.ORANGE});
           -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
           -webkit-mask-composite: xor; mask-composite: exclude; z-index: 0; opacity: .8;
         }
         .cs-card-body {
-          position: relative; z-index: 1; border-radius: 16px; padding: 18px 18px 14px;
+          position: relative; z-index: 1; border-radius: clamp(11px, 2.5vw, 16px); padding: clamp(12px, 3vw, 18px);
           display: flex; flex-direction: column; align-items: flex-start; text-align: left;
           height: 100%; border: 1px solid rgba(255,255,255,0.14);
           backdrop-filter: blur(10px) saturate(180%);
           background: rgba(20,20,20,.72);
+          gap: clamp(6px, 2vw, 8px);
         }
         .light .cs-card-body {
           border-color: rgba(0,0,0,0.12);
           background: rgba(255,255,255,0.9);
         }
 
-        .cs-header-info { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
-        .cs-text-wrap { display: flex; flex-direction: column; justify-content: center; }
-        .cs-avatar, .cs-initial {
-          width: 70px; height: 70px; border-radius: 50%; object-fit: cover;
-          border: 3px solid ${CS.PINK}44; display: grid; place-items: center;
+        .cs-header-info { 
+          display: flex; align-items: center; gap: clamp(10px, 2vw, 16px); 
+          margin-bottom: 0;
+          flex-shrink: 0;
         }
-        .cs-initial { font-size: 24px; font-weight: 700; background: linear-gradient(135deg, ${CS.DARK_BLUE}, ${CS.BLUE}); color: ${CS.WHITE}; }
+        .cs-text-wrap { 
+          display: flex; flex-direction: column; justify-content: center; 
+          flex: 1; min-width: 0;
+        }
+        .cs-avatar, .cs-initial {
+          width: clamp(50px, 12vw, 70px); height: clamp(50px, 12vw, 70px); 
+          border-radius: 50%; object-fit: cover;
+          border: 3px solid ${CS.PINK}44; display: grid; place-items: center; flex-shrink: 0;
+        }
+        .cs-initial { font-size: clamp(16px, 4vw, 24px); font-weight: 700; background: linear-gradient(135deg, ${CS.DARK_BLUE}, ${CS.BLUE}); color: ${CS.WHITE}; }
 
-        .cs-name { font-weight: 700; font-size: 19px; letter-spacing: -0.01em; }
-        .cs-role { font-size: 14px; opacity: 0.8; margin-bottom: 2px; }
-        .cs-title { font-size: 13px; opacity: 0.7; }
+        .cs-name { font-weight: 700; font-size: clamp(14px, 3vw, 19px); letter-spacing: -0.01em; word-break: break-word; }
+        .cs-role { font-size: clamp(12px, 2vw, 14px); opacity: 0.8; margin-bottom: 2px; }
+        .cs-title { font-size: clamp(11px, 1.5vw, 13px); opacity: 0.7; }
 
         .cs-value {
-          font-style: italic; font-size: 14px; line-height: 1.5; opacity: 0.9;
-          margin: 4px 0 14px 0; padding-left: 10px; border-left: 3px solid ${CS.BLUE}55;
+          font-style: italic; font-size: clamp(12px, 1.5vw, 14px); line-height: 1.5; opacity: 0.9;
+          margin: 0; padding-left: 10px; border-left: 3px solid ${CS.BLUE}55;
           flex-grow: 1;
         }
 
         .cs-skills {
-          font-size: 13px; opacity: 0.9; margin-bottom: 10px;
-          display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+          font-size: clamp(11px, 1.5vw, 13px); opacity: 0.9; margin-bottom: 0;
+          display: flex; flex-wrap: wrap; align-items: center; gap: clamp(4px, 1vw, 6px);
+          width: 100%;
         }
         .cs-skills strong { font-weight: 600; margin-right: 4px; }
         .cs-skill-tag {
           background-color: rgba(255,255,255,0.1);
-          padding: 4px 8px; border-radius: 6px; font-size: 11px;
+          padding: clamp(3px, 1vw, 4px) clamp(6px, 1.5vw, 8px); 
+          border-radius: 6px; font-size: clamp(10px, 1.2vw, 11px);
           border: 1px solid rgba(255,255,255,0.15);
           white-space: nowrap;
         }
@@ -539,25 +597,30 @@ export default function TeamReveal({ dark = true }) {
           border: 1px solid rgba(0,0,0,0.1);
         }
 
-        .cs-contribution { font-size: 13px; opacity: 0.9; margin-bottom: 12px; }
+        .cs-contribution { 
+          font-size: clamp(11px, 1.5vw, 13px); opacity: 0.9; margin-bottom: 0;
+          word-break: break-word;
+        }
         .cs-contribution strong { font-weight: 600; margin-right: 4px; }
 
-        .cs-link-separator { width: 100%; height: 1px; background: rgba(255,255,255,0.14); margin: 8px 0 10px; }
+        .cs-link-separator { width: 100%; height: 1px; background: rgba(255,255,255,0.14); margin: clamp(6px, 1.5vw, 8px) 0; }
         .light .cs-link-separator { background: rgba(0,0,0,0.1); }
 
         /* Social row: left icons + right button */
         .cs-social-row {
           width: 100%;
           display: flex; align-items: center; justify-content: space-between;
-          gap: 10px;
+          gap: clamp(6px, 1vw, 10px); flex-wrap: wrap;
         }
         .cs-social-btn {
           display: inline-flex; align-items: center; justify-content: center;
-          width: 36px; height: 36px; border-radius: 10px;
+          width: clamp(32px, 8vw, 36px); height: clamp(32px, 8vw, 36px); 
+          border-radius: 10px;
           background: rgba(255,255,255,0.08);
           border: 1px solid rgba(255,255,255,0.15);
           color: ${CS.WHITE};
           transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+          flex-shrink: 0;
         }
         .cs-social-btn:hover {
           transform: translateY(-2px);
@@ -575,19 +638,29 @@ export default function TeamReveal({ dark = true }) {
         }
 
         .cs-view-profile-btn {
-          font-size: 13px; text-decoration: none; padding: 10px 18px; border-radius: 999px;
+          font-size: clamp(11px, 1.5vw, 13px); 
+          text-decoration: none; 
+          padding: clamp(8px, 1.5vw, 10px) clamp(14px, 2vw, 18px); 
+          border-radius: 999px;
           border: none; color: ${CS.WHITE};
           background: var(--accent-color);
-          display: inline-flex; align-items: center; gap: 8px;
+          display: inline-flex; align-items: center; gap: 6px;
           font-weight: 600; transition: transform 160ms ease, box-shadow 160ms ease;
           box-shadow: 0 4px 10px rgba(0,0,0,0.2);
           white-space: nowrap;
+          min-height: clamp(30px, 7vw, 36px);
         }
         .cs-view-profile-btn:hover {
           transform: translateY(-2px);
           box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
         .light .cs-view-profile-btn { color: ${CS.WHITE}; }
+
+        @media (max-width: 640px) {
+          .cs-wrap { overflow-x: hidden; }
+          .cs-particle { display: none; }
+          .cs-section-head { margin-bottom: 1rem; }
+        }
       `}</style>
     </div>
   );
