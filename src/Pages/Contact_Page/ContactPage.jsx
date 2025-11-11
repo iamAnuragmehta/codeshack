@@ -41,7 +41,7 @@ export default function ContactPage({ dark = true }) {
   return (
     <div
       ref={pageRef}
-      className={`relative w-screen min-h-screen ${bgColor} transition-all duration-500 overflow-x-hidden`}
+      className={`relative w-screen min-h-screen ${bgColor} transition-all duration-500`}
     >
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">

@@ -49,7 +49,7 @@ const Home = () => {
         <EventsPage dark={dark} />
       </section>
 
-      <section id="event-section" className="relative z-10">
+      <section id="contact-section" className="relative z-10">
         <ContactPage dark={dark} />
       </section>
     </div>
