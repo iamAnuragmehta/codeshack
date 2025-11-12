@@ -7,106 +7,55 @@ const WHITE = "#FFFFFF";
 const Navbar = ({ dark }) => {
   const barRef = useRef(null);
   const menuRef = useRef(null);
-  const navRef = useRef(null);
 
   const BASE_WIDTH = 250;
   const FULL_WIDTH = 900;
   const MENU_OPEN_WIDTH = 600;
 
   const [hovering, setHovering] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     const bar = barRef.current;
     const menu = menuRef.current;
-    const nav = navRef.current;
-    if (!bar || !menu || !nav) return;
-
-    const isHome =
-      typeof window !== "undefined" && window.location.pathname === "/";
+    if (!bar || !menu) return;
 
     const about = document.getElementById("about-section");
+    if (!about) return;
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
+      const maxScroll = about.offsetTop - 150;
 
-      // ✅ Desktop-only expansion logic
-      if (window.innerWidth >= 768 && about) {
-        const maxScroll = about.offsetTop - 150;
-        const progress = Math.min(1, scrollY / maxScroll);
-        const target = hovering ? 1 : progress;
+      const progress = Math.min(1, scrollY / maxScroll);
+      const target = hovering ? 1 : progress;
 
-        gsap.to(bar, {
-          width: BASE_WIDTH + (FULL_WIDTH - BASE_WIDTH) * target,
-          duration: 0.25,
-          ease: "power2.out",
-        });
+      gsap.to(bar, {
+        width: BASE_WIDTH + (FULL_WIDTH - BASE_WIDTH) * target,
+        duration: 0.25,
+        ease: "power2.out",
+      });
 
-        gsap.to(menu, {
-          width: MENU_OPEN_WIDTH * target,
-          opacity: target,
-          duration: 0.25,
-          ease: "power2.out",
-        });
-      } else {
-        // ✅ Mobile: keep navbar compact
-        gsap.to(bar, {
-          width: BASE_WIDTH,
-          duration: 0.25,
-          ease: "power2.out",
-        });
-
-        gsap.to(menu, {
-          width: 0,
-          opacity: 0,
-          duration: 0.25,
-          ease: "power2.out",
-        });
-      }
-
-      // ✅ Mobile-only hide-on-scroll (homepage)
-      if (isHome && window.innerWidth < 768) {
-        const threshold = 80;
-        if (scrollY > lastScrollYRef.current && scrollY > threshold) {
-          setIsVisible(false); // scrolling down
-        } else {
-          setIsVisible(true); // scrolling up
-        }
-      } else {
-        setIsVisible(true);
-      }
-
-      lastScrollYRef.current = scrollY;
+      gsap.to(menu, {
+        width: MENU_OPEN_WIDTH * target,
+        opacity: target,
+        duration: 0.25,
+        ease: "power2.out",
+      });
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    const handleResize = () => {
-      // If resized to desktop, ensure navbar visible and responsive again
-      if (window.innerWidth >= 768) setIsVisible(true);
-    };
-    window.addEventListener("resize", handleResize);
-
+    window.addEventListener("scroll", handleScroll);
     handleScroll();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [hovering]);
 
-  // ✅ Animate show/hide on mobile scroll
-  useEffect(() => {
-    if (!navRef.current) return;
-    gsap.to(navRef.current, {
-      y: isVisible ? 0 : -120,
-      opacity: isVisible ? 1 : 0,
-      duration: 0.28,
-      ease: "power2.out",
-      pointerEvents: isVisible ? "auto" : "none",
-    });
-  }, [isVisible]);
+  const handleNavClick = (item) => {
+    const sectionId = item.toLowerCase() === "home" ? "hero-section" : `${item.toLowerCase()}-section`;
+    const section = document.getElementById(sectionId);
+    
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   const bg = dark ? "rgba(255,255,255,0.06)" : BLACK;
   const text = WHITE;
@@ -115,10 +64,7 @@ const Navbar = ({ dark }) => {
   const items = ["HOME", "ABOUT", "EVENTS", "CONTACT"];
 
   return (
-    <nav
-      ref={navRef}
-      className="fixed top-8 left-0 right-0 z-50 flex justify-center pointer-events-none"
-    >
+    <nav className="fixed top-8 left-0 right-0 z-50 flex justify-center pointer-events-none">
       <div className="pointer-events-auto">
         <div
           ref={barRef}
