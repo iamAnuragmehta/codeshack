@@ -7,12 +7,26 @@ const WHITE = "#FFFFFF";
 const Navbar = ({ dark }) => {
   const barRef = useRef(null);
   const menuRef = useRef(null);
+  const lastScrollY = useRef(0);
 
   const BASE_WIDTH = 250;
   const FULL_WIDTH = 900;
   const MENU_OPEN_WIDTH = 600;
 
   const [hovering, setHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const bar = barRef.current;
@@ -25,6 +39,19 @@ const Navbar = ({ dark }) => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const maxScroll = about.offsetTop - 150;
+
+      // Hide/show navbar based on scroll direction
+      if (scrollY > lastScrollY.current && scrollY > 100) {
+        // Scrolling down
+        setIsVisible(false);
+      } else {
+        // Scrolling up
+        setIsVisible(true);
+      }
+      lastScrollY.current = scrollY;
+
+      // Disable expansion on mobile
+      if (isMobile) return;
 
       const progress = Math.min(1, scrollY / maxScroll);
       const target = hovering ? 1 : progress;
@@ -46,7 +73,7 @@ const Navbar = ({ dark }) => {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [hovering]);
+  }, [hovering, isMobile]);
 
   const handleNavClick = (item) => {
     const sectionId = item.toLowerCase() === "home" ? "hero-section" : `${item.toLowerCase()}-section`;
@@ -64,7 +91,12 @@ const Navbar = ({ dark }) => {
   const items = ["HOME", "ABOUT", "EVENTS", "CONTACT"];
 
   return (
-    <nav className="fixed top-8 left-0 right-0 z-50 flex justify-center pointer-events-none">
+    <nav 
+      className="fixed left-0 right-0 z-50 flex justify-center pointer-events-none transition-all duration-300"
+      style={{
+        top: isVisible ? "2rem" : "-100px",
+      }}
+    >
       <div className="pointer-events-auto">
         <div
           ref={barRef}
@@ -75,8 +107,8 @@ const Navbar = ({ dark }) => {
             width: BASE_WIDTH,
             backdropFilter: "blur(12px)",
           }}
-          onMouseEnter={() => setHovering(true)}
-          onMouseLeave={() => setHovering(false)}
+          onMouseEnter={() => !isMobile && setHovering(true)}
+          onMouseLeave={() => !isMobile && setHovering(false)}
         >
           {/* LOGO */}
           <div
